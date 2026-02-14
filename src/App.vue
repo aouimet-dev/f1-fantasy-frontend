@@ -5,40 +5,44 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
+  <div class="app-shell flex flex-col">
     <!-- Navigation Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
+    <header class="relative border-b border-slate-900/80 bg-neutral-900/90 shadow-lg shadow-black/50">
+      <div class="absolute inset-x-0 top-0 h-1 f1-gradient" />
       <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
         <div class="flex items-center gap-8">
-          <router-link to="/" class="text-2xl font-bold f1-gradient bg-clip-text text-transparent">
+          <router-link
+            to="/"
+            class="text-2xl font-bold f1-gradient bg-clip-text text-transparent font-display"
+          >
             F1 Fantasy
           </router-link>
           <div class="flex gap-6">
             <router-link
               to="/"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
+              active-class="text-orange-400 font-semibold"
+              class="text-slate-300 hover:text-orange-300 transition font-display"
             >
               Dashboard
             </router-link>
             <router-link
               to="/standings"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
+              active-class="text-orange-400 font-semibold"
+              class="text-slate-300 hover:text-orange-300 transition font-display"
             >
               Classement
             </router-link>
             <router-link
               to="/races"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
+              active-class="text-orange-400 font-semibold"
+              class="text-slate-300 hover:text-orange-300 transition font-display"
             >
               Courses
             </router-link>
             <router-link
               to="/members"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
+              active-class="text-orange-400 font-semibold"
+              class="text-slate-300 hover:text-orange-300 transition font-display"
             >
               Membres
             </router-link>
@@ -52,12 +56,6 @@ const router = useRouter()
       <router-view />
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-8 mt-16">
-      <div class="container mx-auto px-4 text-center">
-        <p>&copy; 2026 F1 Fantasy Pool. Tous droits réservés.</p>
-      </div>
-    </footer>
   </div>
 </template>
 
