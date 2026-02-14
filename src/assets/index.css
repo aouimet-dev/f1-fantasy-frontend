@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/* F1 Custom Styles */
+body {
+  @apply bg-gray-50 text-gray-900 antialiased;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.f1-gradient {
+  background: linear-gradient(to right, #DC0000, #FFD700, #FF8700);
+}
+
+.f1-card {
+  @apply bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300;
+}
+
+.f1-button {
+  @apply px-4 py-2 text-white font-semibold rounded-lg transition-colors duration-200;
+  background-color: #DC0000;
+}
+
+.f1-button:hover {
+  background-color: #b30000;
+}
+
+.f1-badge {
+  @apply px-3 py-1 rounded-full inline-flex items-center text-sm font-medium;
+}
+
+.rank-up {
+  @apply text-green-600;
+}
+
+.rank-down {
+  @apply text-red-600;
+}
+
+.rank-stable {
+  @apply text-gray-500;
+}
+
+/* PrimeVue Customizations */
+:root {
+  --primary-color: #DC0000;
+  --primary-color-text: #ffffff;
+  --surface-border: #e5e7eb;
+  --surface-ground: #ffffff;
+  --surface-50: #fafafa;
+  --surface-100: #f3f4f6;
+}
+
+.p-component {
+  font-family: 'Inter', system-ui, sans-serif;
+}
