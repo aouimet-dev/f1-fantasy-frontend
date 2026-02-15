@@ -29,12 +29,24 @@ const router = createRouter({
       component: HomeView,
       meta: { requiresAuth: true },
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/login',
+    },
   ],
 })
 
 router.beforeEach(async (to) => {
-  const user = await getCurrentUser()
-  const isAuthenticated = Boolean(user?.authenticated)
+  let isAuthenticated = false
+
+  try {
+    const user = await getCurrentUser()
+    isAuthenticated = Boolean(user?.authenticated)
+  } catch (error) {
+    console.error('Failed to check authentication status:', error)
+    // Treat as unauthenticated on error
+    isAuthenticated = false
+  }
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     return { name: 'login' }

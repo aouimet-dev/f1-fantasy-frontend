@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Card from 'primevue/card'
-import Skeleton from 'primevue/skeleton'
 import Divider from 'primevue/divider'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
