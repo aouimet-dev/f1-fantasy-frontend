@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import PrimeVue from 'primevue/config';
-import { definePreset } from '@primeuix/themes';
-import Aura from '@primeuix/themes/aura';
+import PrimeVue from 'primevue/config'
+import { definePreset } from '@primeuix/themes'
+import Aura from '@primeuix/themes/aura'
 
 import App from './App.vue'
 import router from './router'
@@ -12,63 +12,102 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 
-const Noir = definePreset(Aura, {
+const F1DarkTheme = definePreset(Aura, {
     semantic: {
         primary: {
-            50: '{zinc.50}',
-            100: '{zinc.100}',
-            200: '{zinc.200}',
-            300: '{zinc.300}',
-            400: '{zinc.400}',
-            500: '{zinc.500}',
-            600: '{zinc.600}',
-            700: '{zinc.700}',
-            800: '{zinc.800}',
-            900: '{zinc.900}',
-            950: '{zinc.950}'
+            50: '{violet.50}',
+            100: '{violet.100}',
+            200: '{violet.200}',
+            300: '{violet.300}',
+            400: '{violet.400}',
+            500: '{violet.500}',
+            600: '{violet.600}',
+            700: '{violet.700}',
+            800: '{violet.800}',
+            900: '{violet.900}',
+            950: '{violet.950}'
         },
         colorScheme: {
-            light: {
-                primary: {
-                    color: '{zinc.950}',
-                    inverseColor: '#ffffff',
-                    hoverColor: '{zinc.900}',
-                    activeColor: '{zinc.800}'
-                },
-                highlight: {
-                    background: '{zinc.950}',
-                    focusBackground: '{zinc.700}',
-                    color: '#ffffff',
-                    focusColor: '#ffffff'
-                }
-            },
             dark: {
                 primary: {
-                    color: '{zinc.50}',
-                    inverseColor: '{zinc.950}',
-                    hoverColor: '{zinc.100}',
-                    activeColor: '{zinc.200}'
+                    color: '{violet.700}',
+                    contrastColor: '{surface.950}',
+                    hoverColor: '{violet.400}',
+                    activeColor: '{violet.300}'
                 },
-                highlight: {
-                    background: 'rgba(250, 250, 250, .16)',
-                    focusBackground: 'rgba(250, 250, 250, .24)',
-                    color: 'rgba(255,255,255,.87)',
-                    focusColor: 'rgba(255,255,255,.87)'
+                surface: {
+                    0: '{zinc.950}',
+                    50: '{zinc.900}',
+                    100: '{zinc.800}',
+                    200: '{zinc.700}',
+                    300: '{zinc.600}',
+                    400: '{zinc.500}',
+                    500: '{zinc.400}',
+                    600: '{zinc.300}',
+                    700: '{zinc.200}',
+                    800: '{zinc.100}',
+                    900: '{zinc.50}',
+                    950: '{zinc.50}'
                 }
             }
         }
+    },
+    components: {
+        button: {
+            root: {
+                primary: {
+                    background: '{violet.500}',
+                    hoverBackground: '{violet.400}',
+                    activeBackground: '{violet.300}',
+                    borderColor: '{violet.500}',
+                    hoverBorderColor: '{violet.400}',
+                    activeBorderColor: '{violet.300}',
+                    color: '{surface.950}'
+                }
+            }
+        },
+        card: {
+            root: {
+                background: '{surface.50}',
+                color: '{surface.800}'
+            },
+            subtitle: {
+                color: '{surface.600}'
+            }
+        },
+        datatable: {
+            header: {
+                background: '{surface.50}',
+                borderColor: '{surface.300}',
+                color: '{surface.600}'
+            },
+            headerCell: {
+                background: '{surface.50}',
+                color: '{surface.600}'
+            },
+            row: {
+                background: '{surface.50}',
+                color: '{surface.900}',
+                hoverBackground: '{surface.100}'
+            },
+            bodyCell: {
+                borderColor: '{surface.400}'
+            }
+    },
     }
-});
+})
 
 app.use(PrimeVue, {
     theme: {
-        preset: Noir,
+        preset: F1DarkTheme,
         options: {
             prefix: 'p',
-            darkModeSelector: '.my-app-dark',
+            darkModeSelector: '.app-dark',
             cssLayer: false
-        }
     }
-});
+    }
+})
+
+document.documentElement.classList.add('app-dark')
 
 app.mount('#app')
