@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import Card from 'primevue/card'
 import Divider from 'primevue/divider'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
 import Chart from 'primevue/chart'
 import 'chart.js/auto'
+import { useAuthStore } from '@/stores/auth'
 import GlobalRankCard from '../components/GlobalRankCard.vue'
 import ParticipantTeamsCard from '../components/ParticipantTeamsCard.vue'
 import GlobalStandingsCard from '../components/GlobalStandingsCard.vue'
+
+const authStore = useAuthStore()
+const authenticatedUser = computed(() => authStore.user)
+const participantDisplayName = computed(() => authenticatedUser.value?.name || authenticatedUser.value?.email || 'Participant')
+const participantPicture = computed(() => authenticatedUser.value?.picture)
 
 const participantName = 'Alexandre Ouimet'
 const globalRank = 4
@@ -133,7 +140,8 @@ const pointsChartOptions = {
             </SplitterPanel>
 
             <SplitterPanel :size="67" :minSize="45" style="display: flex">
-                <ParticipantTeamsCard :participant-name="participantName" :teams="teams" />
+                <ParticipantTeamsCard :participant-name="participantDisplayName"
+                    :participant-picture="participantPicture" :teams="teams" />
             </SplitterPanel>
         </Splitter>
 

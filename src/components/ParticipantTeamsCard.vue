@@ -12,6 +12,7 @@ type Team = {
 
 const props = defineProps<{
     participantName: string
+    participantPicture?: string | null
     teams: Team[]
 }>()
 
@@ -23,11 +24,15 @@ const teamsTotalPoints = computed(() => props.teams.reduce((sum, team) => sum + 
         <template #title>
             <div
                 style="height: 4.25rem; display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem">
-                <span>{{ participantName }}</span>
+                <span style="display: inline-flex; align-items: center; gap: 0.5rem">
+                    <img v-if="participantPicture" :src="participantPicture" alt="Participant avatar"
+                        style="width: 1.8rem; height: 1.8rem; border-radius: 9999px" />
+                    <span>{{ participantName }}</span>
+                </span>
                 <span style="display: inline-flex; align-items: baseline; gap: 0.2rem">
                     <span style="opacity: 0.9; margin-right: 0.2rem; font-size: 0.85rem">Total</span>
                     <strong style="font-size: 2.8rem; line-height: 1; color: var(--p-primary-color)">{{ teamsTotalPoints
-                        }}</strong>
+                    }}</strong>
                     <span style="font-size: 0.8rem; margin-left: 0.2rem; opacity: 0.85">pts</span>
                 </span>
             </div>

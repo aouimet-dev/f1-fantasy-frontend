@@ -1,15 +1,15 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import { definePreset } from '@primeuix/themes'
 import Aura from '@primeuix/themes/aura'
 
 import App from './App.vue'
 import router from './router'
+import { pinia } from './stores'
 
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 const F1DarkTheme = definePreset(Aura, {

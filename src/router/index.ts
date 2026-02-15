@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import HomeView from '@/views/HomeView.vue'
-import { getCurrentUser } from '@/services/auth'
+import { pinia } from '@/stores'
+import { useAuthStore } from '@/stores/auth'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -37,13 +38,15 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  const authStore = useAuthStore(pinia)
   let isAuthenticated = false
 
   try {
-    const user = await getCurrentUser()
-    isAuthenticated = Boolean(user?.authenticated)
+    await authStore.fetchCurrentUser()
+    isAuthenticated = authStore.isAuthenticated
   } catch (error) {
     console.error('Failed to check authentication status:', error)
+    authStore.clearUser()
     // Treat as unauthenticated on error
   }
 
