@@ -154,17 +154,6 @@ const pointsChartOptions = {
                 </Card>
             </SplitterPanel>
         </Splitter>
-
-        <Divider />
-
-        <Card>
-            <template #title>Section</template>
-            <template #content>
-                <Skeleton width="100%" height="2rem" />
-                <Divider />
-                <Skeleton width="100%" height="2rem" />
-            </template>
-        </Card>
     </main>
 </template>
 
