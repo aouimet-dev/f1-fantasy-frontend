@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import LoginWithGoogleButton from '@/components/LoginWithGoogleButton.vue'
+import { startGoogleLogin } from '@/services/auth'
 
-const router = useRouter()
-
-const loginWithGoogle = async () => {
-    await router.push({ name: 'home' })
+const loginWithGoogle = () => {
+    startGoogleLogin()
 }
 </script>
 
