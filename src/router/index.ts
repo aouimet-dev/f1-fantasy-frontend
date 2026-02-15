@@ -45,7 +45,6 @@ router.beforeEach(async (to) => {
   } catch (error) {
     console.error('Failed to check authentication status:', error)
     // Treat as unauthenticated on error
-    isAuthenticated = false
   }
 
   if (to.meta.requiresAuth && !isAuthenticated) {
