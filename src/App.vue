@@ -18,9 +18,14 @@ body {
 
 html,
 body,
-#app,
-.app-shell {
+#app {
   min-height: 100%;
   margin: 0;
+}
+
+.app-shell {
+  min-height: 100%;
+  width: min(1100px, 100%);
+  margin: 0 auto;
 }
 </style>
