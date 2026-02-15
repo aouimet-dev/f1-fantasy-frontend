@@ -72,7 +72,7 @@ const F1DarkTheme = definePreset(Aura, {
                 color: '{surface.800}'
             },
             body: {
-                gap: '1rem'
+                gap: '0.4rem'
             },
             subtitle: {
                 color: '{surface.600}'

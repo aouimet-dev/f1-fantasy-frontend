@@ -4,10 +4,22 @@ import Skeleton from 'primevue/skeleton'
 import Divider from 'primevue/divider'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
+import GlobalRankCard from '../components/GlobalRankCard.vue'
+import ParticipantTeamsCard from '../components/ParticipantTeamsCard.vue'
 
-const participantName = 'Alex Ouimet'
+const participantName = 'Alexandre Ouimet'
 const globalRank = 4
-const totalParticipants = 28
+const totalParticipants = 10
+const rankDelta = '+1'
+const pointsToPodium = 12
+const pointsAheadNext = 8
+const averagePoints = 53
+
+const positionStats = [
+    { label: 'Pts du podium', value: pointsToPodium },
+    { label: 'Pts d’avance', value: `+${pointsAheadNext}` },
+    { label: 'Pts en moyenne', value: averagePoints }
+]
 
 const teams = [
     { name: 'Équipe 1', points: 512 },
@@ -22,27 +34,12 @@ const teams = [
 
         <Splitter style="height: auto">
             <SplitterPanel :size="33" :minSize="25" style="display: flex">
-                <Card style="width: 100%; height: 100%">
-                    <template #title>Position globale</template>
-                    <template #content>
-                        <p style="font-size: 2rem; margin: 0"><strong>#{{ globalRank }}</strong></p>
-                        <p style="margin-top: 0.5rem">sur {{ totalParticipants }} participants</p>
-                    </template>
-                </Card>
+                <GlobalRankCard :global-rank="globalRank" :total-participants="totalParticipants"
+                    :rank-delta="rankDelta" :position-stats="positionStats" />
             </SplitterPanel>
 
             <SplitterPanel :size="67" :minSize="45" style="display: flex">
-                <Card style="width: 100%; height: 100%">
-                    <template #title>Aperçu du participant</template>
-                    <template #content>
-                        <p><strong>Participant:</strong> {{ participantName }}</p>
-                        <Divider />
-                        <p><strong>Équipes:</strong></p>
-                        <ul>
-                            <li v-for="team in teams" :key="team.name">{{ team.name }} — {{ team.points }} pts</li>
-                        </ul>
-                    </template>
-                </Card>
+                <ParticipantTeamsCard :participant-name="participantName" :teams="teams" />
             </SplitterPanel>
         </Splitter>
 
