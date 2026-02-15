@@ -21,6 +21,7 @@ body,
 #app {
   min-height: 100%;
   margin: 0;
+  background-color: var(--p-surface-50);
 }
 
 .app-shell {

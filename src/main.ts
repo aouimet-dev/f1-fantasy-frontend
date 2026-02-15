@@ -68,7 +68,7 @@ const F1DarkTheme = definePreset(Aura, {
         },
         card: {
             root: {
-                background: '{surface.50}',
+                background: '{surface.100}',
                 color: '{surface.800}'
             },
             body: {
@@ -80,12 +80,12 @@ const F1DarkTheme = definePreset(Aura, {
         },
         datatable: {
             header: {
-                background: '{surface.50}',
+                background: '{surface.100}',
                 borderColor: '{surface.300}',
                 color: '{surface.600}'
             },
             headerCell: {
-                background: '{surface.50}',
+                background: '{surface.100}',
                 color: '{surface.600}'
             },
             row: {
@@ -96,7 +96,17 @@ const F1DarkTheme = definePreset(Aura, {
             bodyCell: {
                 borderColor: '{surface.400}'
             }
-    },
+        },
+        splitter: {
+            root: {
+                background: '{surface.50}',
+                borderColor: '{surface.50}'
+            },
+            gutter: {
+                background: '{surface.50}'
+            }
+        }
+        
     }
 })
 
