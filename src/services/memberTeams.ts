@@ -4,6 +4,17 @@ export type MemberTeam = {
     teamOrder: number
 }
 
+export type TeamPerformance = {
+    teamId: string
+    teamName: string
+    totalPoints: number
+    racesParticipated: number
+    averagePointsPerRace: number
+    bestRacePoints: number | null
+    worstRacePoints: number | null
+    consistencyScore: number | null
+}
+
 type CreateMemberTeamPayload = {
     teamName: string
     teamOrder: number
@@ -37,4 +48,17 @@ export const createMemberTeam = async (memberId: string, payload: CreateMemberTe
     }
 
     return response.json() as Promise<MemberTeam>
+}
+
+export const getTeamPerformance = async (memberId: string, teamId: string): Promise<TeamPerformance> => {
+    const response = await fetch(`/api/members/${memberId}/teams/${teamId}/performance`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+
+    if (!response.ok) {
+        throw new Error(`Failed to get team performance (${response.status})`)
+    }
+
+    return response.json() as Promise<TeamPerformance>
 }
