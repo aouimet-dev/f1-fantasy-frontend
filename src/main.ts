@@ -105,6 +105,18 @@ const F1DarkTheme = definePreset(Aura, {
             gutter: {
                 background: '{surface.50}'
             }
+        },
+        menubar: {
+            root: {
+                background: '{surface.100}',
+                borderColor: '{surface.200}',
+                color: '{surface.900}'
+            },
+            item: {
+                color: '{surface.900}',
+                focusBackground: '{surface.200}',
+                activeBackground: '{surface.200}'
+            }
         }
         
     }

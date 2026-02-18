@@ -1,10 +1,33 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { RouterView } from 'vue-router'
+import Menubar from 'primevue/menubar'
+
+const route = useRoute()
+const navbarItems = [
+  { label: 'Accueil', route: '/home' },
+  { label: 'Membres', route: '/members' },
+]
+
+const showNavbar = computed(() => route.name !== 'login')
 </script>
 
 <template>
-  <div class="app-shell">
-    <RouterView />
+  <div class="app-root">
+    <Menubar v-if="showNavbar" :model="navbarItems" class="app-navbar">
+      <template #item="{ item, props }">
+        <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+          <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+            <span>{{ item.label }}</span>
+          </a>
+        </RouterLink>
+      </template>
+    </Menubar>
+
+    <div class="app-shell">
+      <RouterView />
+    </div>
   </div>
 </template>
 

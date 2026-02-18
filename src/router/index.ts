@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import HomeView from '@/views/HomeView.vue'
+import MembersView from '@/views/MembersView.vue'
 import { pinia } from '@/stores'
 import { useAuthStore } from '@/stores/auth'
 
@@ -28,6 +29,12 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: HomeView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/members',
+      name: 'members',
+      component: MembersView,
       meta: { requiresAuth: true },
     },
     {
