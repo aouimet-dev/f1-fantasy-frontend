@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import Card from 'primevue/card'
 import Divider from 'primevue/divider'
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 
@@ -16,7 +18,21 @@ const props = defineProps<{
     teams: Team[]
 }>()
 
+const emit = defineEmits<{
+    'create-teams': [teamNames: string[]]
+}>()
+
 const teamsTotalPoints = computed(() => props.teams.reduce((sum, team) => sum + team.points, 0))
+const newTeamNames = ref(['', '', ''])
+const canSubmitTeams = computed(() => newTeamNames.value.every((teamName) => teamName.trim().length > 0))
+
+const submitTeams = () => {
+    if (!canSubmitTeams.value) {
+        return
+    }
+
+    emit('create-teams', newTeamNames.value.map((teamName) => teamName.trim()))
+}
 </script>
 
 <template>
@@ -39,7 +55,15 @@ const teamsTotalPoints = computed(() => props.teams.reduce((sum, team) => sum + 
         </template>
         <template #content>
             <Divider />
-            <DataTable :value="teams" size="small" :showGridlines="true" :showHeaders="false">
+            <div v-if="teams.length === 0" style="display: grid; padding: 1rem; gap: 0.75rem">
+                <span>Entre tes 3 équipes</span>
+                <InputText v-model="newTeamNames[0]" placeholder="Équipe 1" />
+                <InputText v-model="newTeamNames[1]" placeholder="Équipe 2" />
+                <InputText v-model="newTeamNames[2]" placeholder="Équipe 3" />
+                <Button label="Créer mes équipes" :disabled="!canSubmitTeams" @click="submitTeams" />
+            </div>
+
+            <DataTable v-else :value="teams" size="small" :showGridlines="true" :showHeaders="false">
                 <Column field="name" />
                 <Column field="points" bodyStyle="text-align: center">
                     <template #body="{ data }">

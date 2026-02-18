@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import Card from 'primevue/card'
 import Divider from 'primevue/divider'
 import Splitter from 'primevue/splitter'
@@ -7,14 +7,21 @@ import SplitterPanel from 'primevue/splitterpanel'
 import Chart from 'primevue/chart'
 import 'chart.js/auto'
 import { useAuthStore } from '@/stores/auth'
+import { useMemberTeamsStore } from '@/stores/memberTeams'
+import { getStandings } from '@/services/standings'
 import GlobalRankCard from '../components/GlobalRankCard.vue'
 import ParticipantTeamsCard from '../components/ParticipantTeamsCard.vue'
 import GlobalStandingsCard from '../components/GlobalStandingsCard.vue'
 
 const authStore = useAuthStore()
+const memberTeamsStore = useMemberTeamsStore()
 const authenticatedUser = computed(() => authStore.user)
 const participantDisplayName = computed(() => authenticatedUser.value?.name || authenticatedUser.value?.email || 'Participant')
 const participantPicture = computed(() => authenticatedUser.value?.picture)
+const teams = computed(() => memberTeamsStore.teams.map((team) => ({
+    name: team.teamName,
+    points: 0
+})))
 
 const participantName = 'Alexandre Ouimet'
 const globalRank = 4
@@ -30,24 +37,7 @@ const positionStats = [
     { label: 'Pts en moyenne', value: averagePoints }
 ]
 
-const teams = [
-    { name: 'Équipe 1', points: 512 },
-    { name: 'Équipe 2', points: 476 },
-    { name: 'Équipe 3', points: 431 }
-]
-
-const globalStandings = [
-    { rank: 1, participant: 'Camille Gagnon', points: 1620 },
-    { rank: 2, participant: 'Julien Fortin', points: 1584 },
-    { rank: 3, participant: 'Sophie Tremblay', points: 1547 },
-    { rank: 4, participant: 'Alexandre Ouimet', points: 1419 },
-    { rank: 5, participant: 'Marc Bouchard', points: 1398 },
-    { rank: 6, participant: 'Nicolas Roy', points: 1336 },
-    { rank: 7, participant: 'Valérie Côté', points: 1295 },
-    { rank: 8, participant: 'Étienne Lavoie', points: 1248 },
-    { rank: 9, participant: 'Mélanie Gendron', points: 1203 },
-    { rank: 10, participant: 'Patrick Morin', points: 1167 }
-]
+const globalStandings = ref<{ rank: number, participant: string, points: number }[]>([])
 
 const grandPrixLabels = [
     'Bahreïn',
@@ -127,6 +117,49 @@ const pointsChartOptions = {
         }
     }
 }
+
+onMounted(async () => {
+    try {
+        const standings = await getStandings()
+        globalStandings.value = standings.map((standing) => ({
+            rank: standing.currentRank,
+            participant: standing.memberName,
+            points: standing.totalPoints
+        }))
+    } catch (error) {
+        console.error('Failed to load global standings:', error)
+    }
+
+    const user = authStore.user
+
+    console.log('Authenticated user:', user)
+
+    if (!user?.authenticated) {
+        return
+    }
+
+    try {
+        await memberTeamsStore.loadTeamsForUser(user)
+    } catch (error) {
+        console.error('Failed to load member teams:', error)
+    }
+})
+
+const createTeams = async (teamNames: string[]) => {
+    const user = authStore.user
+
+    if (!user?.authenticated) {
+        return
+    }
+
+    try {
+        for (const teamName of teamNames) {
+            await memberTeamsStore.createTeamForUser(user, teamName)
+        }
+    } catch (error) {
+        console.error('Failed to create member team:', error)
+    }
+}
 </script>
 
 <template>
@@ -141,7 +174,7 @@ const pointsChartOptions = {
 
             <SplitterPanel :size="67" :minSize="45" style="display: flex">
                 <ParticipantTeamsCard :participant-name="participantDisplayName"
-                    :participant-picture="participantPicture" :teams="teams" />
+                    :participant-picture="participantPicture" :teams="teams" @create-teams="createTeams" />
             </SplitterPanel>
         </Splitter>
 

@@ -6,18 +6,8 @@ export type AuthUser = {
 	authenticated: boolean
 }
 
-const backendBaseUrl = (import.meta.env.VITE_BACKEND_BASE_URL as string | undefined)?.replace(/\/$/, '')
-
-const withBackendBase = (path: string) => {
-	if (!backendBaseUrl) {
-		return path
-	}
-
-	return `${backendBaseUrl}${path}`
-}
-
 export const getCurrentUser = async (): Promise<AuthUser | null> => {
-	const response = await fetch(withBackendBase('/api/auth/me'), {
+	const response = await fetch('/api/auth/me', {
 		method: 'GET',
 		credentials: 'include'
 	})
@@ -34,11 +24,11 @@ export const getCurrentUser = async (): Promise<AuthUser | null> => {
 }
 
 export const startGoogleLogin = () => {
-	window.location.assign(withBackendBase('/oauth2/authorization/google'))
+	window.location.assign('/oauth2/authorization/google')
 }
 
 export const logout = async () => {
-	const response = await fetch(withBackendBase('/api/auth/logout'), {
+	const response = await fetch('/api/auth/logout', {
 		method: 'POST',
 		credentials: 'include'
 	})
