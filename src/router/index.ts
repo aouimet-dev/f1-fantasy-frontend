@@ -1,51 +1,71 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+import LoginView from '@/views/LoginView.vue'
+import HomeView from '@/views/HomeView.vue'
+import MembersView from '@/views/MembersView.vue'
+import { pinia } from '@/stores'
+import { useAuthStore } from '@/stores/auth'
 
-const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    name: 'Dashboard',
-    component: () => import('../pages/Dashboard.vue'),
-  },
-  {
-    path: '/standings',
-    name: 'Leaderboard',
-    component: () => import('../pages/Leaderboard.vue'),
-  },
-  {
-    path: '/races',
-    name: 'RaceCalendar',
-    component: () => import('../pages/RaceCalendar.vue'),
-  },
-  {
-    path: '/races/:raceId',
-    name: 'RaceDetails',
-    component: () => import('../pages/RaceDetails.vue'),
-  },
-  {
-    path: '/members',
-    name: 'Members',
-    component: () => import('../pages/Members.vue'),
-  },
-  {
-    path: '/members/:memberId',
-    name: 'MemberProfile',
-    component: () => import('../pages/MemberProfile.vue'),
-  },
-  {
-    path: '/members/:memberId/teams/:teamId',
-    name: 'TeamDetails',
-    component: () => import('../pages/TeamDetails.vue'),
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: () => import('../pages/NotFound.vue'),
-  },
-]
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth?: boolean
+    guestOnly?: boolean
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+  routes: [
+    {
+      path: '/',
+      redirect: '/login',
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+      meta: { guestOnly: true },
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: HomeView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/members',
+      name: 'members',
+      component: MembersView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/login',
+    },
+  ],
+})
+
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore(pinia)
+  let isAuthenticated = false
+
+  try {
+    await authStore.fetchCurrentUser()
+    isAuthenticated = authStore.isAuthenticated
+  } catch (error) {
+    console.error('Failed to check authentication status:', error)
+    authStore.clearUser()
+    // Treat as unauthenticated on error
+  }
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return { name: 'login' }
+  }
+
+  if (to.meta.guestOnly && isAuthenticated) {
+    return { name: 'home' }
+  }
+
+  return true
 })
 
 export default router

@@ -1,64 +1,55 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { RouterView } from 'vue-router'
+import Menubar from 'primevue/menubar'
 
-const router = useRouter()
+const route = useRoute()
+const navbarItems = [
+  { label: 'Accueil', route: '/home' },
+  { label: 'Membres', route: '/members' },
+]
+
+const showNavbar = computed(() => route.name !== 'login')
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
-    <!-- Navigation Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
-      <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-8">
-          <router-link to="/" class="text-2xl font-bold f1-gradient bg-clip-text text-transparent">
-            F1 Fantasy
-          </router-link>
-          <div class="flex gap-6">
-            <router-link
-              to="/"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
-            >
-              Dashboard
-            </router-link>
-            <router-link
-              to="/standings"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
-            >
-              Classement
-            </router-link>
-            <router-link
-              to="/races"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
-            >
-              Courses
-            </router-link>
-            <router-link
-              to="/members"
-              active-class="text-f1-red font-semibold"
-              class="text-gray-700 hover:text-f1-red transition"
-            >
-              Membres
-            </router-link>
-          </div>
-        </div>
-      </nav>
-    </header>
+  <div class="app-root">
+    <Menubar v-if="showNavbar" :model="navbarItems" class="app-navbar">
+      <template #item="{ item, props }">
+        <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+          <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+            <span>{{ item.label }}</span>
+          </a>
+        </RouterLink>
+      </template>
+    </Menubar>
 
-    <!-- Main Content -->
-    <main class="flex-grow">
-      <router-view />
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-8 mt-16">
-      <div class="container mx-auto px-4 text-center">
-        <p>&copy; 2026 F1 Fantasy Pool. Tous droits réservés.</p>
-      </div>
-    </footer>
+    <div class="app-shell">
+      <RouterView />
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
+
+html,
+body {
+  font-family: 'Orbitron', sans-serif;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+  background-color: var(--p-surface-50);
+}
+
+.app-shell {
+  min-height: 100%;
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+</style>

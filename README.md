@@ -1,6 +1,6 @@
 # f1-fantasy-frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend of my F1 Pool!
 
 ## Recommended IDE Setup
 
